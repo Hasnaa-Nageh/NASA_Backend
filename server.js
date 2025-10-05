@@ -26,21 +26,14 @@ const swaggerOptions = {
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
-// Routes
 app.use("/api", weatherRouter);
 
-// Swagger JSON endpoint
-app.get("/swagger.json", (req, res) => {
-  res.json(swaggerSpec);
-});
+app.get("/swagger.json", (req, res) => res.json(swaggerSpec));
 
-// Swagger UI (fixed for Vercel)
 app.use(
   "/api-docs",
   swaggerUi.serveFiles(swaggerSpec, {}),
   swaggerUi.setup(swaggerSpec)
 );
 
-app.listen(3000, () => {
-  console.log("Server Running On Port 3000");
-});
+app.listen(3000, () => console.log("Server Running On Port 3000"));
