@@ -8,6 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Swagger setup
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -17,21 +18,24 @@ const swaggerOptions = {
       description: "API documentation for the weather prediction system",
     },
     servers: [
-      {
-        url: "https://nasa-backend-six.vercel.app",
-      },
-      {
-        url: "http://localhost:3000",
-      },
+      { url: "https://nasa-backend-six.vercel.app" },
+      { url: "http://localhost:3000" },
     ],
   },
-  apis: ["./routes/*.js"], 
+  apis: ["./routes/*.js"],
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
-
+// Routes
 app.use("/api", weatherRouter);
+
+// Swagger endpoints
+app.get("/swagger.json", (req, res) => {
+  res.json(swaggerSpec);
+});
+
+// 👇 دي اللي بتخلي swagger يفتح صفحة UI
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(3000, () => {
