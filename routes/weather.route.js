@@ -1,5 +1,5 @@
 const express = require("express");
-const getWeather = require("../controller/weather.controller");
+const getWeather = require("./../controller/weather.controller");
 const router = express.Router();
 
 /**
@@ -37,20 +37,6 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
-
-// GET request → explain only POST allowed
-router.get("/weather", (req, res) => {
-  res.status(405).json({
-    success: false,
-    message:
-      "This endpoint only supports POST method. Please send date and region in the request body.",
-    example_body: {
-      date: "2025-12-01",
-      region: "North",
-    },
-  });
-});
-
 router.post("/weather", getWeather);
 
 module.exports = router;

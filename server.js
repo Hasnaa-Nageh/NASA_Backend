@@ -8,38 +8,35 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// -------------------------
-// Swagger Configuration
-// -------------------------
+// إعداد Swagger
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
       title: "NASA Weather Prediction API",
       version: "1.0.0",
-      description: "API documentation for the weather prediction system 🚀",
+      description: "API documentation for the weather prediction system",
     },
     servers: [
-      { url: "https://nasa-backend-six.vercel.app" },
-      { url: "http://localhost:3000" },
+      {
+        url: "https://nasa-backend-six.vercel.app",
+      },
+      {
+        url: "http://localhost:3000",
+      },
     ],
   },
-  apis: ["./routes/weather.route.js"], // Swagger annotations location
+  apis: ["./routes/*.js"], // ✅ دي أهم حاجة علشان يقرأ التعريفات من ملفات الراوت
 };
 
-const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
-// -------------------------
-// Routes
-// -------------------------
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
+// راوترات المشروع
 app.use("/api", weatherRouter);
 
-app.get("/swagger.json", (req, res) => res.json(swaggerSpec));
-
-app.use(
-  "/api-docs",
-  swaggerUi.serveFiles(swaggerSpec, {}),
-  swaggerUi.setup(swaggerSpec)
-);
-
-app.listen(3000, () => console.log("✅ Server Running On Port 3000"));
+app.listen(3000, () => {
+  console.log("Server Running On Port 3000");
+});
