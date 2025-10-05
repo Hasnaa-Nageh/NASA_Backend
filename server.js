@@ -8,7 +8,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Swagger setup
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -30,13 +29,17 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 // Routes
 app.use("/api", weatherRouter);
 
-// Swagger endpoints
+// Swagger JSON endpoint
 app.get("/swagger.json", (req, res) => {
   res.json(swaggerSpec);
 });
 
-// 👇 دي اللي بتخلي swagger يفتح صفحة UI
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Swagger UI (fixed for Vercel)
+app.use(
+  "/api-docs",
+  swaggerUi.serveFiles(swaggerSpec, {}),
+  swaggerUi.setup(swaggerSpec)
+);
 
 app.listen(3000, () => {
   console.log("Server Running On Port 3000");
