@@ -8,7 +8,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// إعداد Swagger
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -26,7 +25,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["./routes/*.js"], // ✅ دي أهم حاجة علشان يقرأ التعريفات من ملفات الراوت
+  apis: ["./routes/*.js"],
 };
 
 
@@ -34,7 +33,6 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
-// راوترات المشروع
 app.use("/api", weatherRouter);
 
 app.listen(3000, () => {

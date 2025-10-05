@@ -38,5 +38,15 @@ const router = express.Router();
  *         description: Server error
  */
 router.post("/weather", getWeather);
-
+router.get("/weather", (req, res) => {
+  res.status(405).json({
+    success: false,
+    message:
+      "This endpoint only supports POST method. Please send date and region in the request body.",
+    example_body: {
+      date: "2025-12-01",
+      region: "North",
+    },
+  });
+});
 module.exports = router;
